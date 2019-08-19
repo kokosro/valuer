@@ -44,10 +44,10 @@ Will start a http server on port `12345`
 - saves account state
 
 ### tx-type
-input: currency comes into account
-output: currency goes out of the account
-thing-input: a thing comes into inventory
-thing-output: a thing goes out of inventory
+- `input`: currency comes into account
+- `output`: currency goes out of the account
+- `thing-input`: a thing comes into inventory
+- `thing-output`: a thing goes out of inventory
 
 ### currency
 supported currencies so far: ron, eur, cad, usd, btc, eth, dai
