@@ -3,17 +3,20 @@ const uuid = require('uuid/v1');
 const csv = require('csv-parser');
 const fs = require('fs');
 
-const { Entity, createEntity } = require('./src/elements/entity');
+// const { Entity, createEntity } = require('./src/elements/entity');
+
+const EntityFactory = require('./src/elements/entity-factory');
 const systemData = require('./storage/entities/system.json');
 const Server = require('./src/http/server');
 const Routes = require('./src/routes');
 
 
 const run = () => {
-  const system = createEntity(systemData);
+  const factory = new EntityFactory();
+  console.log(factory);
   const server = Server({
     routes: Routes,
-    system,
+    factory,
   });
   server.listen(12345, () => {
     console.log('started');

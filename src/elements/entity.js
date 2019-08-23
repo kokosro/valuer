@@ -1,15 +1,17 @@
 const BN = require('bignumber.js');
 const fs = require('fs');
 const csv = require('csv-parser');
+const S = require('../manipulation/string');
 const Transaction = require('./transaction');
 const Currencies = require('./currency');
 
+const storagePathStart = './storage/entities';
 class Entity {
   constructor({
     name,
     txs,
     transactions = null,
-    storagePath = './storage/entities',
+    storagePath = storagePathStart,
   }) {
     this.name = name;
     this.memory = {};
@@ -23,17 +25,29 @@ class Entity {
       this.readTxs(txs);
     } else if (transactions) {
       this.readTransactions(transactions);
+    } else if (!txs) {
+      this.readTxs(`${this.storagePath}/${this.name}.json`);
     }
     this.unsavedChanges = false;
     this.loaded = null;
   }
 
-  readTxs(txs) {
+  hash() {
+    return S.hash(this.name);
+  }
+
+
+  readTxsCsv(txs) {
     this.loaded = false;
     fs.createReadStream(txs)
       .pipe(csv())
       .on('data', this.transact.bind(this))
       .on('end', this.hasLoaded.bind(this));
+  }
+
+  readTxs(jsonPath) {
+    this.loaded = false;
+    this.loaded = true;
   }
 
   readTransactions(transactions) {
@@ -339,6 +353,13 @@ Entity.knownInstances = {};
 module.exports = {
   Entity,
   createEntity: (obj) => {
+    const filePath = `${storagePathStart}/${obj.name}.json`;
+    if (obj.name && obj.name.length > 1 && fs.existsSync(filePath)) {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const entity = new Entity(data);
+    }
+
+
     const entity = new Entity(obj);
     return entity;
   },

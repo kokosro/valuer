@@ -3,7 +3,7 @@ const uuid = require('uuid/v1');
 
 const taxesPercentages = (description, exists = false) => {
   const percentages = {
-    salariu: 1155 / 2145,
+    wage: 1155 / 2145,
     crypto: 0.1,
     withdraw: 0.05,
     ins: 0.01,

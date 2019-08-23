@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
 
-const define = ({ config, ird }) => {
+const define = ({ config }) => {
   const router = Router();
 
 
